@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CLAIM.SYSTEM.POE.Models.Claim>
+
+@{
+    ViewData["Title"] = "HR Reporting Dashboard";
+
+    // Calculate total amount of all approved claims for a simple report header
+    double totalApprovedAmount = Model.Sum(c => c.TotalAmount);
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">HR/Finance Reporting: Approved Claims</h2>
+
+    <div class="alert alert-success text-center shadow-sm">
+        <h4 class="mb-0">Total Approved Payments to Date: <span class="fw-bold">R @totalApprovedAmount.ToString("N2")</span></h4>
+    </div>
+
+    <p class="text-muted">This dashboard lists all claims that have been approved by the Coordinator, ready for payment processing.</p>
+    <hr />
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            No claims have been approved yet.
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover table-bordered shadow-sm">
+            <thead class="table-success">
+                <tr>
+                    <th>Claim ID</th>
+                    <th>Hours</th>
+                    <th>Rate</th>
+                    <th>Total Payment</th>
+                    <th>Approved Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in Model)
+                {
+                    <tr>
+                        <td>#@claim.ClaimId</td>
+                        <td>@claim.HoursWorked</td>
+                        <td>R @claim.HourlyRate</td>
+                        <td class="fw-bold">R @claim.TotalAmount.ToString("N2")</td>
+                        <td>@claim.SubmissionDate.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

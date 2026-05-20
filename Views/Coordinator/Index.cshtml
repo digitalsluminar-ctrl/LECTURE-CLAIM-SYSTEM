@@ -1,0 +1,70 @@
+﻿@model IEnumerable<CLAIM.SYSTEM.POE.Models.Claim>
+
+@{
+    ViewData["Title"] = "Coordinator Dashboard";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Claim Verification Dashboard</h2>
+    <hr />
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            No claims have been submitted yet.
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover table-bordered shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Hours</th>
+                    <th>Rate</th>
+                    <th>Total Claim</th>
+                    <th>Submitted</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in Model)
+                {
+                    <tr>
+                        <td>#@claim.ClaimId</td>
+                        <td>@claim.HoursWorked</td>
+                        <td>R @claim.HourlyRate</td>
+                        <td class="fw-bold">R @claim.TotalAmount</td>
+                        <td>@claim.SubmissionDate.ToShortDateString()</td>
+                        <td>
+                            @if (claim.Status == "Pending")
+                            {
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            }
+                            else if (claim.Status == "Approved")
+                            {
+                                <span class="badge bg-success">Approved</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Rejected</span>
+                            }
+                        </td>
+                        <td>
+                            @if (claim.Status == "Pending")
+                            {
+                                <a asp-action="Approve" asp-route-id="@claim.ClaimId" class="btn btn-success btn-sm me-2">Approve</a>
+                                <a asp-action="Reject" asp-route-id="@claim.ClaimId" class="btn btn-danger btn-sm">Reject</a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Processed</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
