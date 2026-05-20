@@ -1,5 +1,3 @@
-#Lecture-Claim-System
-
 Overview
 The Lecture Claim Management System is a web-based application built with C# and ASP.NET Core MVC. It was developed to streamline and automate the process of submitting, tracking, and approving payment claims for academic lecturers.
 
